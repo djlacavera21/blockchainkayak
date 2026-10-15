@@ -1,0 +1,14 @@
+node_modules/
+.env
+.env.*
+!.env.example
+data/
+credentials/
+fabric-identities.json
+fabric-samples/
+*.pem
+*.key
+*.sqlite*
+test-results/
+playwright-report/
+coverage/

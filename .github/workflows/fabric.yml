@@ -1,0 +1,40 @@
+name: Fabric network smoke test
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "chaincode/**"
+      - "server/fabric-ledger.js"
+      - "scripts/fabric-*"
+      - "scripts/enroll-test-identities.js"
+      - "package*.json"
+      - ".github/workflows/fabric.yml"
+permissions:
+  contents: read
+jobs:
+  fabric:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm --prefix chaincode ci
+      - name: Install official Fabric development network tools
+        run: |
+          mkdir -p "$RUNNER_TEMP/kayak-fabric"
+          cd "$RUNNER_TEMP/kayak-fabric"
+          curl -fsSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh
+          bash install-fabric.sh --fabric-version 2.5.16 --ca-version 1.5.17 docker binary samples
+          echo "FABRIC_SAMPLES_PATH=$RUNNER_TEMP/kayak-fabric/fabric-samples" >> "$GITHUB_ENV"
+      - run: npm run fabric:up
+      - run: npm run fabric:deploy
+      - run: npm run fabric:enroll
+      - run: npm run test:fabric
+      - if: always()
+        name: Stop isolated test network
+        run: npm run fabric:down

@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#123f3a" />
+    <title>Chagrin River · Dock ledger</title>
+    <link rel="icon" href="/mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <a href="#main" class="skip">Skip to dock board</a>
+    <aside class="sidebar">
+      <a class="brand" href="/"
+        ><img src="/mark.svg" width="44" height="44" alt="" /><span
+          >CHAGRIN RIVER<small>KAYAK & PADDLEBOARD</small></span
+        ></a
+      >
+      <div class="workspace-label">THE RENTAL STAND</div>
+      <nav aria-label="Main navigation">
+        <button
+          class="nav-item active"
+          data-view="overview"
+          aria-current="page"
+        >
+          <span aria-hidden="true">◫</span> Dock board
+        </button>
+        <button class="nav-item" data-view="fleet">
+          <span aria-hidden="true">◇</span> Equipment
+        </button>
+        <button class="nav-item" data-view="rentals">
+          <span aria-hidden="true">↗</span> On the water
+        </button>
+        <button class="nav-item" data-view="ledger">
+          <span aria-hidden="true">≡</span> Activity ledger
+        </button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="river-lines" aria-hidden="true">~ ~ ~</div>
+        <p>
+          Every boat.<br />Every handoff.<br /><strong
+            >One clear record.</strong
+          >
+        </p>
+        <div class="location">CHAGRIN RIVER · OHIO</div>
+      </div>
+    </aside>
+    <div class="workspace">
+      <header class="topbar">
+        <span class="breadcrumb"
+          >Operations <span>/</span> <strong>Dock ledger</strong></span
+        >
+        <div class="topbar-actions">
+          <span id="connection" class="connection">Connecting</span
+          ><button class="text-button" id="lock">Lock session</button>
+          <div class="avatar" aria-label="Staff session">CR</div>
+        </div>
+      </header>
+      <div id="mode-banner" class="mode-banner">
+        Connecting to the rental ledger…
+      </div>
+      <main id="main" tabindex="-1">
+        <div class="hero">
+          <div>
+            <div class="eyebrow" id="today">EASTLAKE, OHIO</div>
+            <h1 id="page-title">A clear view of the dock.</h1>
+            <p id="page-description">
+              Get the next crew out. Bring every boat back.
+            </p>
+          </div>
+          <div class="hero-actions">
+            <button class="button secondary" id="refresh">
+              ↻ <span>Refresh</span></button
+            ><button class="button primary write-control" id="new-rental">
+              + New rental
+            </button>
+          </div>
+        </div>
+        <div id="error-banner" class="error-banner" role="alert" hidden></div>
+        <section
+          class="metrics"
+          aria-label="Current equipment summary"
+          id="metrics"
+        ></section>
+        <section id="overview-view" class="view">
+          <div class="overview-grid">
+            <section class="panel">
+              <div class="panel-heading">
+                <div>
+                  <div class="eyebrow">READY FOR THE NEXT ADVENTURE</div>
+                  <h2>At the dock</h2>
+                </div>
+                <button class="text-button" data-view="fleet">
+                  View fleet ↗
+                </button>
+              </div>
+              <div class="dock-list" id="dock-list"></div>
+              <div class="panel-foot">
+                <span class="dot"></span> Availability reflects recorded
+                checkouts and inspections.
+              </div>
+            </section>
+            <aside class="launch-panel" id="launch-panel"></aside>
+          </div>
+          <section class="panel rental-panel">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">KEEP AN EYE ON THE RETURN</div>
+                <h2>
+                  On the water <span id="active-count" class="count">0</span>
+                </h2>
+              </div>
+              <span class="muted">Times shown in Eastern Time</span>
+            </div>
+            <div id="overview-rentals"></div>
+          </section>
+        </section>
+        <section id="fleet-view" class="view" hidden>
+          <div class="section-tools">
+            <div
+              class="filter-group"
+              role="group"
+              aria-label="Equipment filters"
+            >
+              <button
+                data-filter="vessels"
+                class="filter active"
+                aria-pressed="true"
+              >
+                Vessels</button
+              ><button data-filter="all" class="filter" aria-pressed="false">
+                All equipment</button
+              ><button
+                data-filter="inspection_due"
+                class="filter"
+                aria-pressed="false"
+              >
+                Needs inspection</button
+              ><button
+                data-filter="maintenance"
+                class="filter"
+                aria-pressed="false"
+              >
+                Maintenance
+              </button>
+            </div>
+            <button
+              class="button secondary manager-control"
+              data-command="register"
+            >
+              + Add equipment
+            </button>
+          </div>
+          <label class="search-label"
+            >Find equipment
+            <input
+              id="fleet-search"
+              type="search"
+              placeholder="Search an ID or equipment label"
+          /></label>
+          <div id="fleet-grid" class="fleet-grid"></div>
+        </section>
+        <section id="rentals-view" class="view" hidden>
+          <section class="panel">
+            <div class="panel-heading">
+              <h2>Active rentals</h2>
+              <span class="muted">Returns always require a new inspection</span>
+            </div>
+            <div id="all-rentals"></div>
+          </section>
+          <form class="lookup-form" id="lookup-rental">
+            <label
+              >Find a previous rental
+              <input
+                name="rentalId"
+                placeholder="e.g. DEMO-1001"
+                required
+                pattern="[A-Za-z0-9][A-Za-z0-9_-]{1,63}" /></label
+            ><button class="button secondary">Look up rental</button>
+          </form>
+        </section>
+        <section id="ledger-view" class="view" hidden>
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <div class="eyebrow">THE LAST 50 OPERATIONS</div>
+                <h2>Recorded activity</h2>
+              </div>
+              <button class="button secondary" id="export">
+                Export snapshot ↓
+              </button>
+            </div>
+            <p class="panel-note">
+              Equipment history is available from each equipment card. A waiver
+              digest records evidence; it does not establish legal validity.
+            </p>
+            <div id="activity-list"></div>
+          </section>
+        </section>
+        <footer class="footer">
+          <span
+            >CHAGRIN RIVER <span class="footer-slash">/</span> DOCK LEDGER</span
+          ><span id="last-updated">Awaiting first sync</span>
+        </footer>
+      </main>
+    </div>
+    <dialog id="access-dialog" aria-labelledby="access-title">
+      <form id="access-form">
+        <div class="dialog-brand">
+          <img src="/mark.svg" width="42" height="42" alt="" /><span
+            >CHAGRIN RIVER</span
+          >
+        </div>
+        <div class="eyebrow">STAFF ACCESS</div>
+        <h2 id="access-title">Welcome to the stand.</h2>
+        <p>
+          Enter the access key provided by your manager. For a local demo, use
+          the link printed in the terminal.
+        </p>
+        <label
+          >Staff access key<input
+            id="access-key"
+            type="password"
+            autocomplete="off"
+            required
+            autofocus
+        /></label>
+        <p class="form-error" id="access-error" role="alert"></p>
+        <button class="button primary full">Open dock ledger →</button>
+      </form>
+    </dialog>
+    <dialog id="operation-dialog" aria-labelledby="operation-title">
+      <div class="dialog-head">
+        <h2 id="operation-title"></h2>
+        <button
+          type="button"
+          class="close-button"
+          data-close
+          aria-label="Close dialog"
+        >
+          ×
+        </button>
+      </div>
+      <div id="operation-body"></div>
+    </dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+  </body>
+</html>

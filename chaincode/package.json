@@ -1,0 +1,12 @@
+{
+  "name": "blockchainkayak-contract",
+  "version": "0.1.0",
+  "description": "Permissioned kayak rental and equipment custody contract",
+  "main": "index.js",
+  "engines": { "node": ">=20" },
+  "scripts": { "start": "fabric-chaincode-node start" },
+  "dependencies": {
+    "fabric-contract-api": "2.5.8",
+    "fabric-shim": "2.5.8"
+  }
+}

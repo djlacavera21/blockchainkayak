@@ -1,0 +1,25 @@
+{
+  "name": "blockchainkayak",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A Fabric-backed rental operations ledger for Chagrin River Kayak and Paddleboard",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server/index.js",
+    "demo": "node --env-file-if-exists=.env server/index.js --demo",
+    "test": "node --test test/*.test.js",
+    "check": "node scripts/check.js",
+    "test:browser": "node scripts/browser-test.js",
+    "test:fabric": "node --env-file=.env.fabric-test scripts/fabric-smoke.js",
+    "fabric:up": "bash scripts/fabric-network.sh up",
+    "fabric:deploy": "bash scripts/fabric-network.sh deploy",
+    "fabric:enroll": "node scripts/enroll-test-identities.js",
+    "fabric:start": "node --env-file=.env.fabric-test server/index.js",
+    "fabric:down": "bash scripts/fabric-network.sh down"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "1.14.6",
+    "@hyperledger/fabric-gateway": "1.13.0"
+  },
+  "devDependencies": { "@playwright/test": "1.56.1" }
+}
